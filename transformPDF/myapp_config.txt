@@ -1,0 +1,32 @@
+[onedrive_info]
+use_onedrive_cmd = false
+netdrive_name = xxx@xxx.com
+
+[postgres_info]
+use_postgres = false
+db_name = test_class
+db_user = postgres
+db_passwd = 123456we
+db_host = 127.0.0.1
+db_port = 5432
+pdf_table = pdf_zip_data
+pdf_origin_table = pdf_origin_files
+all_origin_table = all_origin_files
+
+[ftp_info]
+use_ftp_server = false
+ftp_server_dir = E:/FTPServer
+ftp_folder_max_count = 10
+ftp_folder_max_size = 50
+
+[socket_info]
+socket_server_host = 192.168.1.57
+socket_server_port = 8787
+
+[thread_use]
+use_threading = false
+
+[explanation_info]
+use_choose = true
+not_use_choose = false
+
