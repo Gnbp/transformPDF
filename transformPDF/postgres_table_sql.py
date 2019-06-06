@@ -1,4 +1,12 @@
-from settings import TABLE_PDF_ZIP, TABLE_PDF_ORIGIN, TABLE_ALL_ORIGIN
+from settings import DATABASE_NAME, TABLE_PDF_ZIP, TABLE_PDF_ORIGIN, TABLE_ALL_ORIGIN
+
+DB_NAME = """
+CREATE DATABASE if not exists {};
+""".format(DATABASE_NAME)
+
+DB_NAME_EXIST = """
+select * from pg_database where datname='{}';
+""".format(DATABASE_NAME)
 
 PDF_SEQ = """
 CREATE SEQUENCE if not exists pdf_id_seq

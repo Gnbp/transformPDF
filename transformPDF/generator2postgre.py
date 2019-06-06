@@ -3,7 +3,7 @@ import os, time, shutil, zipfile, configparser, imghdr, hashlib, datetime, threa
 from PyPDF2 import PdfFileReader as pdfreader, PdfFileWriter as pdfwriter
 
 from file_obj import MyOriginFile, MySQLFile
-from postgres_table_sql import PDF_SEQ, ORIGIN_SEQ, ALL_SEQ
+from postgres_table_sql import PDF_SEQ, ORIGIN_SEQ, ALL_SEQ, DB_NAME, DB_NAME_EXIST
 from postgres_table_sql import PDF_ZIP_TABLE, PDF_ORIGIN_FILES, ALL_ORIGIN_FILES
 from postgres_func_sql import DROP_INSERT_FUNCTION_SQL, DROP_ORIGIN_FUNCTION_SQL, DROP_UPDATE_FUNCTION_SQL, DROP_EXIST_FUNCTION_SQL
 from postgres_func_sql import INSERT_SQL_ORIGIN, INSERT_SQL_PDF, UPDATE_SQL_PDF, FILE_OBJ_EXIST
@@ -40,6 +40,7 @@ class MyPdfZip(object):
     def run(self):
         if use_ftp_server == 'true':
             self.init_ftp_list()
+        self.init_db_create()
         self.conn = psycopg2.connect(database=DATABASE_NAME, user=DB_USER, password=DB_PASSWORD,host=DB_HOST,port=DB_PORT)
         # 初始化postgresql 表
         self.init_db_table()
@@ -544,6 +545,23 @@ class MyPdfZip(object):
             self.conn.commit()
             cur.close()
             self.postgre_func_isfirst = False
+
+    def init_db_create(self):
+        db_create_conn = psycopg2.connect(user=DB_USER, password=DB_PASSWORD, host=DB_HOST, port=DB_PORT)
+        db_create_cur = db_create_conn.cursor()
+        db_create_cur.execute(DB_NAME_EXIST)
+        db_create_conn.commit()  # <-- ADD THIS LINE
+        result = db_create_cur.fetchall()
+        if result == []:
+            db_create_conn.autocommit = True
+            db_create_cur.execute(DB_NAME)
+            # 这个连接直接关闭了，不需要下面这行代码了
+            # db_create_conn.autocommit = False
+        else:
+            print('{} is exist'.format(DATABASE_NAME))
+        db_create_cur.close()
+        db_create_conn.close()
+
 
     def init_db_table(self):
         cur = self.conn.cursor()
