@@ -1,0 +1,5 @@
+img2pdf
+psutil
+PyPDF2
+psycopg2
+pyftplib
