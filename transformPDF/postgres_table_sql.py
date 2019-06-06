@@ -1,7 +1,7 @@
 from settings import DATABASE_NAME, TABLE_PDF_ZIP, TABLE_PDF_ORIGIN, TABLE_ALL_ORIGIN
 
 DB_NAME = """
-CREATE DATABASE if not exists {};
+CREATE DATABASE {};
 """.format(DATABASE_NAME)
 
 DB_NAME_EXIST = """
